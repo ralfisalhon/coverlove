@@ -1,29 +1,24 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React, { Component } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  StatusBar,
+  Dimensions,
+  ImageBackground,
+  Image
+} from "react-native";
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
-type Props = {};
 export default class App extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <StatusBar barStyle="light-content" />
+        <View style={styles.albumView}>
+          <Image source={{ uri: "null" }} />
+        </View>
       </View>
     );
   }
@@ -32,18 +27,18 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#202020"
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  text: {
+    color: "#FFF",
+    fontFamily: "Avenir Next",
+    fontSize: 24
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  albumView: {
+    height: windowWidth / 1.25,
+    width: windowWidth / 1.25,
+    backgroundColor: "#8645fb"
+  }
 });
