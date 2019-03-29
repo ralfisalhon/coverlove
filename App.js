@@ -8,7 +8,8 @@ import {
   ImageBackground,
   Image,
   Alert,
-  TouchableOpacity
+  TouchableOpacity,
+  TextInput
 } from "react-native";
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
@@ -73,18 +74,16 @@ export default class App extends Component<Props> {
         <View
           style={{ backgroundColor: this.state.colors[this.state.colorIndex] }}
         >
-          <ImageBackground
-            source={{ uri: this.state.imgURL }}
-            style={styles.imageView}
-          >
-            <Text style={styles.text}>Hello</Text>
-          </ImageBackground>
+          <Image source={{ uri: this.state.imgURL }} style={styles.imageView} />
+        </View>
+        <View>
+          <TextInput style={styles.text} defaultValue={"My Chill Mix"} />
         </View>
         <TouchableOpacity onPress={() => this.randomPicture()}>
-          <Text style={styles.text}>Random Picture</Text>
+          <Text style={styles.text2}>Random Picture</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => this.randomColor()}>
-          <Text style={styles.text}>Random Color</Text>
+          <Text style={styles.text2}>Random Color</Text>
         </TouchableOpacity>
       </View>
     );
@@ -94,18 +93,26 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#202020"
+    backgroundColor: "#202020",
+    paddingTop: 50
   },
   text: {
-    color: "#FFF",
+    color: "white",
+    marginTop: windowWidth / -2.5 - 15,
     fontFamily: "Avenir Next",
-    fontSize: 24
+    fontSize: 30
+  },
+  text2: {
+    color: "white",
+    fontFamily: "Avenir Next",
+    fontSize: 30
   },
   imageView: {
     height: windowWidth / 1.25,
     width: windowWidth / 1.25,
-    opacity: 0.5
+    opacity: 0.7,
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
