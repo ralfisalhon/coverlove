@@ -115,7 +115,7 @@ export default class App extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView bounces={false}>
+        <ScrollView bounces={true}>
           {this.renderHeader()}
           {this.renderAlbum()}
           <View style={styles.settingsContainer}>
@@ -138,7 +138,7 @@ export default class App extends React.Component {
   renderHeader() {
     return (
       <View style={styles.titleView}>
-        <Text style = {[styles.title, {color: "#fff"}]}>cover<Text style = {{color: "#faa719"}}>love</Text> </Text>
+        <Text style = {[styles.title, {color: "#fff"}]}>cover<Text style = {{color: "#faa719"}}>love</Text> <Text style = {{fontSize: 12}}>by Ralfi</Text> </Text>
       </View>
     );
   }
@@ -207,7 +207,7 @@ export default class App extends React.Component {
             style={{
               fontSize: 27,
               color: "white",
-              textShadowColor: 'rgba(0, 0, 0, 0.7)',
+              textShadowColor: 'rgba(0, 0, 0, 0.75)',
               textShadowOffset: {width: 0, height: 1},
               textShadowRadius: 1
             }}
@@ -273,7 +273,10 @@ export default class App extends React.Component {
             style={{
               fontSize: 20,
               color: "white",
-              marginLeft: 5
+              marginLeft: 5,
+              textShadowColor: 'rgba(0, 0, 0, 0.5)',
+              textShadowOffset: {width: 0, height: 1},
+              textShadowRadius: 1
             }}
           />
         </TouchableOpacity>
@@ -290,7 +293,7 @@ export default class App extends React.Component {
       <View style={styles.imageView}>
         <View
           style={{
-            borderRadius: 20,
+            borderRadius: 0,
             backgroundColor: this.state.colors[this.state.colorIndex]
           }}
         >
@@ -305,6 +308,7 @@ export default class App extends React.Component {
           style={[
             styles.textView,
             {
+                justifyContent: 'center',
               alignItems:
                 this.state.textAlign == "center"
                   ? "center"
@@ -502,13 +506,13 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#FF530D",
-    fontSize: 32,
+    fontSize: 36,
     fontFamily: "Bradley Hand"
   },
   imageView: {
     width: windowWidth,
     alignItems: "center",
-    borderRadius: 20
+    borderRadius: 0
   },
   image: {
     justifyContent: "center",
@@ -516,7 +520,7 @@ const styles = StyleSheet.create({
     height: windowWidth / 1.2,
     width: windowWidth / 1.2,
     backgroundColor: "#485460",
-    borderRadius: 20
+    borderRadius: 0
   },
   thumbImage: {
     justifyContent: "center",
@@ -535,7 +539,10 @@ const styles = StyleSheet.create({
     color: "white",
     marginTop: windowWidth / -1.2,
     fontFamily: "Avenir Next",
-    fontWeight: "500"
+    fontWeight: "500",
+    textShadowColor: 'rgba(0, 0, 0, 0.25)',
+    textShadowOffset: {width: 0, height: 1},
+    textShadowRadius: 1
   },
   icons: {
     flexDirection: "row",
@@ -560,7 +567,7 @@ const styles = StyleSheet.create({
     fontFamily: "Avenir Next",
     fontSize: 16,
     fontWeight: "300",
-    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
     textShadowOffset: {width: 0, height: 1},
     textShadowRadius: 1
   },
