@@ -49,6 +49,7 @@ export default class App extends React.Component {
       loading: true,
       images: new Array(50),
       name: "My Chill Mix",
+      fontSize: 32,
     };
   }
 
@@ -84,6 +85,16 @@ export default class App extends React.Component {
             "https://picsum.photos/512/?image=" + (index * 10 + randomAddition)
         })
     );
+  }
+
+  increaseFont() {
+      if (this.state.fontSize > 50) return;
+      this.setState({fontSize: this.state.fontSize + 2});
+  }
+
+  decreaseFont() {
+      if (this.state.fontSize < 20) return;
+      this.setState({fontSize: this.state.fontSize - 2});
   }
 
   randomColor() {
@@ -172,7 +183,7 @@ export default class App extends React.Component {
         style={{
           justifyContent: "center",
           alignItems: "center",
-          marginTop: 8,
+          marginTop: 7,
           flexDirection: 'row',
         }}
       >
@@ -181,20 +192,20 @@ export default class App extends React.Component {
             borderRadius: 10,
             padding: 5,
             paddingHorizontal: 5,
-            width: 30,
-            height: 30,
+            width: 32,
+            height: 32,
             justifyContent: 'center',
             alignItems: 'center',
-            marginLeft: -30
+            marginLeft: -28
           }}
           activeOpacity={0.5}
-          onPress={() => Alert.alert("minus!")}
+          onPress={() => this.decreaseFont()}
         >
           <Icon
             name={"minus"}
             type={"Entypo"}
             style={{
-              fontSize: 25,
+              fontSize: 27,
               color: "white",
               textShadowColor: 'rgba(0, 0, 0, 0.7)',
               textShadowOffset: {width: 0, height: 1},
@@ -207,20 +218,20 @@ export default class App extends React.Component {
             borderRadius: 10,
             padding: 5,
             paddingHorizontal: 5,
-            width: 30,
-            height: 30,
+            width: 32,
+            height: 32,
             justifyContent: 'center',
             alignItems: 'center',
             marginLeft: -5,
           }}
           activeOpacity={0.5}
-          onPress={() => Alert.alert("plus!")}
+          onPress={() => this.increaseFont()}
         >
           <Icon
             name={"plus"}
             type={"Entypo"}
             style={{
-              fontSize: 25,
+              fontSize: 27,
               color: "white",
               textShadowColor: 'rgba(0, 0, 0, 0.7)',
               textShadowOffset: {width: 0, height: 1},
@@ -306,7 +317,7 @@ export default class App extends React.Component {
           <TextInput
             multiline
             value={ this.state.name }
-            style={[styles.overlayText, { textAlign: this.state.textAlign }]}
+            style={[styles.overlayText, { textAlign: this.state.textAlign, fontSize: this.state.fontSize}]}
             defaultValue={"My Chill Mix"}
             onChangeText={ (e) => this.updateName(e) }
             maxLength={32}
@@ -524,14 +535,12 @@ const styles = StyleSheet.create({
     color: "white",
     marginTop: windowWidth / -1.2,
     fontFamily: "Avenir Next",
-    fontSize: 32,
     fontWeight: "500"
   },
   icons: {
     flexDirection: "row",
     marginTop: 12,
     paddingTop: 3,
-    width: windowWidth / 4
   },
   icon: {
     fontSize: 32,
