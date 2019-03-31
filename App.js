@@ -47,7 +47,8 @@ export default class App extends React.Component {
       imgURL: "https://picsum.photos/512/?random",
       dimensions: 300,
       loading: true,
-      images: new Array(50)
+      images: new Array(50),
+      name: "My Chill Mix",
     };
   }
 
@@ -178,7 +179,7 @@ export default class App extends React.Component {
           style={{
             borderWidth: 1,
             borderColor: "white",
-            backgroundColor: "#16a085",
+            backgroundColor: this.state.colors[this.state.colorIndex],
             borderRadius: 10,
             padding: 5,
             flexDirection: "row",
@@ -187,7 +188,7 @@ export default class App extends React.Component {
           activeOpacity={0.5}
           onPress={() => Alert.alert("Saved to your library!")}
         >
-          <Text style={styles.subtext}>Save</Text>
+          <Text style={[styles.subtext, {fontWeight: '500'}]}>Save</Text>
           <Icon
             name={"save"}
             type={"AntDesign"}
@@ -200,6 +201,10 @@ export default class App extends React.Component {
         </TouchableOpacity>
       </View>
     );
+  }
+
+  updateName(name) {
+      this.setState({name})
   }
 
   renderAlbum() {
@@ -233,8 +238,10 @@ export default class App extends React.Component {
         >
           <TextInput
             multiline
+            value={ this.state.name }
             style={[styles.overlayText, { textAlign: this.state.textAlign }]}
             defaultValue={"My Chill Mix"}
+            onChangeText={ (e) => this.updateName(e) }
             maxLength={32}
           />
           {this.state.loading ? (
@@ -476,7 +483,10 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: "Avenir Next",
     fontSize: 16,
-    fontWeight: "300"
+    fontWeight: "300",
+    textShadowColor: 'rgba(0, 0, 0, 0.7)',
+    textShadowOffset: {width: 0, height: 1},
+    textShadowRadius: 1
   },
   settingsContainer: {
     width: windowWidth,

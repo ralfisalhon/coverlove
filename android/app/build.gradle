@@ -102,7 +102,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.coverbase"
+        applicationId "com.coverlove"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
