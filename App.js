@@ -47,7 +47,7 @@ export default class App extends React.Component {
       imgURL: "https://picsum.photos/512/?random",
       dimensions: 300,
       loading: true,
-      images: new Array(20)
+      images: new Array(50)
     };
   }
 
@@ -109,7 +109,7 @@ export default class App extends React.Component {
           <View style={styles.settingsContainer}>
             <View style={styles.spaceBetween}>
               {this.renderIcons()}
-              {this.renderExport()}
+              {this.renderSave()}
               {this.renderRandom()}
             </View>
             <View style={{ width: windowWidth / 1.2 }}>
@@ -135,8 +135,9 @@ export default class App extends React.Component {
       <View
         style={{
           justifyContent: "center",
-          alignItems: "center",
-          marginTop: 16
+          alignItems: "flex-end",
+          marginTop: 12,
+          width: windowWidth / 4
         }}
       >
         <TouchableOpacity
@@ -151,14 +152,12 @@ export default class App extends React.Component {
           activeOpacity={0.5}
           onPress={() => this.randomPicture()}
         >
-          <Text style={styles.subtext}>Random</Text>
           <Icon
             name={"random"}
             type={"FontAwesome"}
             style={{
               fontSize: 22,
-              color: "white",
-              marginLeft: 5
+              color: "white"
             }}
           />
         </TouchableOpacity>
@@ -166,26 +165,27 @@ export default class App extends React.Component {
     );
   }
 
-  renderExport() {
+  renderSave() {
     return (
       <View
         style={{
           justifyContent: "center",
           alignItems: "center",
-          marginTop: 16
+          marginTop: 12
         }}
       >
         <TouchableOpacity
           style={{
             borderWidth: 1,
             borderColor: "white",
+            backgroundColor: "#16a085",
             borderRadius: 10,
             padding: 5,
             flexDirection: "row",
             paddingHorizontal: 10
           }}
           activeOpacity={0.5}
-          onPress={() => this.randomPicture()}
+          onPress={() => Alert.alert("Saved to your library!")}
         >
           <Text style={styles.subtext}>Save</Text>
           <Icon
@@ -215,6 +215,7 @@ export default class App extends React.Component {
             source={{ uri: this.state.imgURL }}
             style={[styles.image, { opacity: 1 - this.state.value }]}
             onLoad={() => this.randomColor()}
+            onError={() => this.randomPicture()}
           />
         </View>
         <View
@@ -455,18 +456,19 @@ const styles = StyleSheet.create({
   icons: {
     flexDirection: "row",
     marginTop: 12,
-    paddingTop: 3
+    paddingTop: 3,
+    width: windowWidth / 4
   },
   icon: {
-    fontSize: 35,
+    fontSize: 32,
     color: "#d2dae2",
     opacity: 1,
-    marginRight: 12
+    marginRight: 8
   },
   text: {
     color: "white",
     fontFamily: "Avenir Next",
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "400",
     marginBottom: 2
   },
