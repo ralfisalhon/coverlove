@@ -17,6 +17,7 @@ import {
   SafeAreaView
 } from "react-native";
 import { Icon } from "native-base";
+import Slider from "react-native-slider";
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
 export default class App extends React.Component {
@@ -24,7 +25,7 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
-      colorIndex: 3,
+      colorIndex: 0,
       colors: [
         "#8745fb",
         "#ab55fa",
@@ -41,7 +42,8 @@ export default class App extends React.Component {
         "#eee",
         "#111"
       ],
-      textAlign: "center"
+      textAlign: "center",
+      value: 0.35
     };
   }
 
@@ -79,7 +81,7 @@ export default class App extends React.Component {
         >
           <Image
             source={{ uri: "https://source.unsplash.com/random/300x300" }}
-            style={styles.image}
+            style={[styles.image, { opacity: 1 - this.state.value }]}
           />
         </View>
         <View
@@ -168,6 +170,27 @@ export default class App extends React.Component {
           renderItem={this.renderColor}
           keyExtractor={(item, index) => index.toString()}
         />
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center"
+          }}
+        >
+          <Text style={styles.subtext}>Intensity</Text>
+          <View style={{ flex: 1, marginHorizontal: 10 }}>
+            <Slider
+              value={this.state.value}
+              minimumValue={0.25}
+              maximumValue={0.75}
+              onValueChange={value => this.setState({ value })}
+              style={customStyles8.container}
+              trackStyle={customStyles8.track}
+              thumbStyle={customStyles8.thumb}
+              minimumTrackTintColor="#31a4db"
+              thumbTouchSize={{ width: 50, height: 40 }}
+            />
+          </View>
+        </View>
       </View>
     );
   }
@@ -200,8 +223,7 @@ const styles = StyleSheet.create({
     height: windowWidth / 1.2,
     width: windowWidth / 1.2,
     backgroundColor: "#485460",
-    borderRadius: 20,
-    opacity: 0.6
+    borderRadius: 20
   },
   textView: { width: windowWidth / 1.2 - 25, justifyContent: "center" },
   overlayText: {
@@ -227,6 +249,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "400"
   },
+  subtext: {
+    color: "white",
+    fontFamily: "Avenir Next",
+    fontSize: 16,
+    fontWeight: "300"
+  },
   settingsContainer: {
     width: windowWidth,
     justifyContent: "center",
@@ -234,5 +262,25 @@ const styles = StyleSheet.create({
   },
   leftAlign: {
     width: windowWidth / 1.2
+  }
+});
+
+var customStyles8 = StyleSheet.create({
+  container: {
+    height: 30
+  },
+  track: {
+    height: 4,
+    backgroundColor: "lightgray"
+  },
+  thumb: {
+    width: 12,
+    height: 12,
+    backgroundColor: "#31a4db",
+    shadowColor: "#31a4db",
+    borderRadius: 10 / 2,
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 2,
+    shadowOpacity: 1
   }
 });
