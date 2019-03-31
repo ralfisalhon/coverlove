@@ -36,10 +36,22 @@ export default class App extends React.Component {
             width: "100%",
             justifyContent: "center",
             alignItems: "center",
-            marginTop: 25
+            marginTop: 25,
+            marginBottom: 5
           }}
         >
           <Text style={styles.title}>coverbase</Text>
+        </View>
+        <View
+          style={{
+            width: windowWidth,
+            alignItems: "center"
+          }}
+        >
+          <Image
+            source={{ uri: "https://source.unsplash.com/random/512x512" }}
+            style={styles.imageView}
+          />
         </View>
       </View>
     );
@@ -50,11 +62,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1e272e"
-    // backgroundColor: "white"
   },
   title: {
     color: "#ffa801",
     fontSize: 36,
     fontFamily: "Bradley Hand"
+  },
+  imageView: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: windowWidth / 1.25,
+    width: windowWidth / 1.25,
+    backgroundColor: "#485460",
+    borderRadius: 20
   }
 });
