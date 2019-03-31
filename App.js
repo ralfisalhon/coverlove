@@ -19,6 +19,7 @@ import {
 import { Icon } from "native-base";
 import Slider from "react-native-slider";
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
+const randomAddition = Math.floor(Math.random() * Math.floor(100));
 
 export default class App extends React.Component {
   constructor(props) {
@@ -43,11 +44,10 @@ export default class App extends React.Component {
       ],
       textAlign: "center",
       value: 0.35,
-      imgURL: "https://picsum.photos/256/?random",
+      imgURL: "https://picsum.photos/512/?random",
       dimensions: 300,
       loading: true,
-      images: new Array(10),
-      randomAddition: Math.floor(Math.random() * Math.floor(100))
+      images: new Array(20)
     };
   }
 
@@ -58,12 +58,21 @@ export default class App extends React.Component {
       },
       () =>
         this.setState({
-          imgURL: "https://picsum.photos/256/?random"
+          imgURL:
+            "https://picsum.photos/512/?image=" +
+            Math.floor(Math.random() * Math.floor(1000))
         })
     );
   }
 
   newPicture(index) {
+    // Alert.alert(index * 10 + this.state.randomAddition);
+    if (
+      this.state.imgURL ==
+      "https://picsum.photos/512/?image=" + (index * 10 + randomAddition)
+    ) {
+      return;
+    }
     this.setState(
       {
         loading: true
@@ -71,9 +80,7 @@ export default class App extends React.Component {
       () =>
         this.setState({
           imgURL:
-            "https://picsum.photos/256/?image=" +
-            index * 10 +
-            this.state.randomAddition
+            "https://picsum.photos/512/?image=" + (index * 10 + randomAddition)
         })
     );
   }
@@ -87,7 +94,10 @@ export default class App extends React.Component {
       return;
     }
 
-    this.setState({ colorIndex });
+    this.setState({
+      colorIndex,
+      value: (Math.floor(Math.random() * Math.floor(50)) + 25) / 100
+    });
   }
 
   render() {
@@ -99,6 +109,7 @@ export default class App extends React.Component {
           <View style={styles.settingsContainer}>
             <View style={styles.spaceBetween}>
               {this.renderIcons()}
+              {this.renderExport()}
               {this.renderRandom()}
             </View>
             <View style={{ width: windowWidth / 1.2 }}>
@@ -133,12 +144,59 @@ export default class App extends React.Component {
             borderWidth: 1,
             borderColor: "white",
             borderRadius: 10,
-            padding: 5
+            padding: 5,
+            flexDirection: "row",
+            paddingHorizontal: 10
           }}
           activeOpacity={0.5}
           onPress={() => this.randomPicture()}
         >
-          <Text style={styles.subtext}>Randomize</Text>
+          <Text style={styles.subtext}>Random</Text>
+          <Icon
+            name={"random"}
+            type={"FontAwesome"}
+            style={{
+              fontSize: 22,
+              color: "white",
+              marginLeft: 5
+            }}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  renderExport() {
+    return (
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 16
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            borderWidth: 1,
+            borderColor: "white",
+            borderRadius: 10,
+            padding: 5,
+            flexDirection: "row",
+            paddingHorizontal: 10
+          }}
+          activeOpacity={0.5}
+          onPress={() => this.randomPicture()}
+        >
+          <Text style={styles.subtext}>Save</Text>
+          <Icon
+            name={"save"}
+            type={"AntDesign"}
+            style={{
+              fontSize: 20,
+              color: "white",
+              marginLeft: 5
+            }}
+          />
         </TouchableOpacity>
       </View>
     );
@@ -149,8 +207,8 @@ export default class App extends React.Component {
       <View style={styles.imageView}>
         <View
           style={{
-            backgroundColor: this.state.colors[this.state.colorIndex],
-            borderRadius: 20
+            borderRadius: 20,
+            backgroundColor: this.state.colors[this.state.colorIndex]
           }}
         >
           <Image
@@ -255,9 +313,8 @@ export default class App extends React.Component {
         <Image
           source={{
             uri:
-              "https://picsum.photos/256/?image=" +
-              index * 10 +
-              this.state.randomAddition
+              "https://picsum.photos/128/?image=" +
+              (index * 10 + randomAddition)
           }}
           style={styles.thumbImage}
         />
@@ -364,7 +421,8 @@ const styles = StyleSheet.create({
   },
   imageView: {
     width: windowWidth,
-    alignItems: "center"
+    alignItems: "center",
+    borderRadius: 20
   },
   image: {
     justifyContent: "center",
@@ -383,7 +441,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     opacity: 1
   },
-  textView: { width: windowWidth / 1.2 - 25, justifyContent: "center" },
+  textView: {
+    width: windowWidth / 1.2 - 25,
+    justifyContent: "center"
+  },
   overlayText: {
     color: "white",
     marginTop: windowWidth / -1.2,
@@ -406,7 +467,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontFamily: "Avenir Next",
     fontSize: 24,
-    fontWeight: "400"
+    fontWeight: "400",
+    marginBottom: 2
   },
   subtext: {
     color: "white",
