@@ -9,7 +9,9 @@ import {
   Image,
   Alert,
   TouchableOpacity,
-  TextInput
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard
 } from "react-native";
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
@@ -69,15 +71,27 @@ export default class App extends Component<Props> {
 
   render() {
     return (
+        <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
       <View style={styles.container}>
+
         <StatusBar barStyle="light-content" />
         <View
           style={{ backgroundColor: this.state.colors[this.state.colorIndex] }}
         >
-          <Image source={{ uri: this.state.imgURL }} style={styles.imageView} />
+          <Image source={{ uri: this.state.imgURL }} style={styles.imageView} onLoad={() => console.log("Loaded!")} />
         </View>
-        <View>
-          <TextInput style={styles.text} defaultValue={"My Chill Mix"} />
+        <View
+          style={{
+            width: windowWidth / 1.25 - 20,
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <TextInput
+            style={styles.text}
+            defaultValue={"My Chill Mix"}
+            multiline={true}
+          />
         </View>
         <TouchableOpacity onPress={() => this.randomPicture()}>
           <Text style={styles.text2}>Random Picture</Text>
@@ -85,7 +99,9 @@ export default class App extends Component<Props> {
         <TouchableOpacity onPress={() => this.randomColor()}>
           <Text style={styles.text2}>Random Color</Text>
         </TouchableOpacity>
+
       </View>
+      </TouchableWithoutFeedback>
     );
   }
 }
@@ -99,9 +115,11 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "white",
-    marginTop: windowWidth / -2.5 - 15,
+    marginTop: windowWidth / -1.25,
     fontFamily: "Avenir Next",
-    fontSize: 30
+    fontSize: 30,
+    fontWeight: "500",
+    textAlign: "center"
   },
   text2: {
     color: "white",
@@ -111,7 +129,7 @@ const styles = StyleSheet.create({
   imageView: {
     height: windowWidth / 1.25,
     width: windowWidth / 1.25,
-    opacity: 0.7,
+    opacity: 0.5,
     justifyContent: "center",
     alignItems: "center"
   }
