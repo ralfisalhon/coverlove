@@ -39,32 +39,41 @@ export default class App extends React.Component {
         "#fa714b",
         "#fed281",
         "#d2d2d2",
-        "#eee",
         "#111"
       ],
       textAlign: "center",
       value: 0.35,
-      imgURL: "https://source.unsplash.com/random/300x300",
+      imgURL: "https://picsum.photos/256/?random",
       dimensions: 300,
       loading: true,
-      images: new Array(100)
+      images: new Array(10),
+      randomAddition: Math.floor(Math.random() * Math.floor(100))
     };
   }
 
-  randomPicture(index) {
-    // Alert.alert(index.toString());
+  randomPicture() {
     this.setState(
       {
-        // dimensions: this.state.dimensions + 1,
+        loading: true
+      },
+      () =>
+        this.setState({
+          imgURL: "https://picsum.photos/256/?random"
+        })
+    );
+  }
+
+  newPicture(index) {
+    this.setState(
+      {
         loading: true
       },
       () =>
         this.setState({
           imgURL:
-            "https://source.unsplash.com/random/" +
-            (300 + index) +
-            "x" +
-            (300 + index)
+            "https://picsum.photos/256/?image=" +
+            index * 10 +
+            this.state.randomAddition
         })
     );
   }
@@ -230,7 +239,7 @@ export default class App extends React.Component {
     return (
       <TouchableOpacity
         activeOpacity={0.5}
-        onPress={() => this.randomPicture(index)}
+        onPress={() => this.newPicture(index)}
         style={{
           borderWidth: 0.5,
           borderColor: "#555",
@@ -246,10 +255,9 @@ export default class App extends React.Component {
         <Image
           source={{
             uri:
-              "https://source.unsplash.com/random/" +
-              (this.state.dimensions + index) +
-              "x" +
-              (this.state.dimensions + index)
+              "https://picsum.photos/256/?image=" +
+              index * 10 +
+              this.state.randomAddition
           }}
           style={styles.thumbImage}
         />
