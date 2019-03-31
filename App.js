@@ -1,107 +1,47 @@
-import React, { Component } from "react";
+import React from "react";
 import {
   StyleSheet,
-  Text,
   View,
-  StatusBar,
-  Dimensions,
-  ImageBackground,
-  Image,
-  Alert,
-  TouchableOpacity,
-  TextInput,
   TouchableWithoutFeedback,
-  Keyboard
+  Dimensions,
+  Animated,
+  Image,
+  Text,
+  Platform,
+  TouchableOpacity,
+  Alert,
+  FlatList,
+  Component,
+  StatusBar,
+  ScrollView
 } from "react-native";
-
+import { Icon } from "native-base";
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 
-export default class App extends Component<Props> {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      dimensions: 512,
-      imgURL: "https://source.unsplash.com/random/512x512",
-      colorIndex: 1,
-      colors: [
-        "#2ef7e6",
-        "#448af8",
-        "#56fa5a",
-        "#feda4b",
-        "#8745fb",
-        "#52fb9b",
-        "#fa714b",
-        "#f54b1e",
-        "#e0d0df",
-        "#54825c",
-        "#fed281",
-        "#050505",
-        "#d4d4d4",
-        "#ab55fa"
-      ]
+      data: []
     };
-  }
-
-  randomPicture() {
-    this.setState(
-      {
-        dimensions: this.state.dimensions + 1
-      },
-      () =>
-        this.setState({
-          imgURL:
-            "https://source.unsplash.com/random/" +
-            this.state.dimensions +
-            "x" +
-            this.state.dimensions
-        })
-    );
-  }
-
-  randomColor() {
-    var colorIndex = Math.floor(Math.random() * this.state.colors.length);
-
-    if (colorIndex == this.state.colorIndex) {
-      this.randomColor();
-      return;
-    }
-
-    this.setState({ colorIndex });
   }
 
   render() {
     return (
-        <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
       <View style={styles.container}>
-
         <StatusBar barStyle="light-content" />
         <View
-          style={{ backgroundColor: this.state.colors[this.state.colorIndex] }}
-        >
-          <Image source={{ uri: this.state.imgURL }} style={styles.imageView} onLoad={() => console.log("Loaded!")} />
-        </View>
-        <View
           style={{
-            width: windowWidth / 1.25 - 20,
+            width: "100%",
             justifyContent: "center",
-            alignItems: "center"
+            alignItems: "center",
+            marginTop: 25
           }}
         >
-          <TextInput
-            style={styles.text}
-            defaultValue={"My Chill Mix"}
-            multiline={true}
-          />
+          <Text style={styles.title}>coverbase</Text>
         </View>
-        <TouchableOpacity onPress={() => this.randomPicture()}>
-          <Text style={styles.text2}>Random Picture</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.randomColor()}>
-          <Text style={styles.text2}>Random Color</Text>
-        </TouchableOpacity>
-
       </View>
-      </TouchableWithoutFeedback>
     );
   }
 }
@@ -109,28 +49,12 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    backgroundColor: "#202020",
-    paddingTop: 50
+    backgroundColor: "#1e272e"
+    // backgroundColor: "white"
   },
-  text: {
-    color: "white",
-    marginTop: windowWidth / -1.25,
-    fontFamily: "Avenir Next",
-    fontSize: 30,
-    fontWeight: "500",
-    textAlign: "center"
-  },
-  text2: {
-    color: "white",
-    fontFamily: "Avenir Next",
-    fontSize: 30
-  },
-  imageView: {
-    height: windowWidth / 1.25,
-    width: windowWidth / 1.25,
-    opacity: 0.5,
-    justifyContent: "center",
-    alignItems: "center"
+  title: {
+    color: "#ffa801",
+    fontSize: 36,
+    fontFamily: "Bradley Hand"
   }
 });

@@ -1,4 +1,4 @@
-package com.coverme;
+package com.coverbase;
 
 import android.app.Application;
 
