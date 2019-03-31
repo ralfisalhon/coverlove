@@ -18,6 +18,9 @@ import {
 } from "react-native";
 import { Icon } from "native-base";
 import Slider from "react-native-slider";
+import ViewShot from "react-native-view-shot";
+import CameraRollExtended from 'react-native-store-photos-album'
+
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 const randomAddition = Math.floor(Math.random() * Math.floor(100));
 
@@ -117,7 +120,9 @@ export default class App extends React.Component {
       <SafeAreaView style={styles.container}>
         <ScrollView bounces={true}>
           {this.renderHeader()}
-          {this.renderAlbum()}
+          <ViewShot ref="viewShot" options={{ format: "jpg", quality: 0.9 }}>
+            {this.renderAlbum()}
+          </ViewShot>
           <View style={styles.settingsContainer}>
             <View style={styles.spaceBetween}>
               {this.renderIcons()}
@@ -175,6 +180,12 @@ export default class App extends React.Component {
         </TouchableOpacity>
       </View>
     );
+  }
+
+  savePlaylist() {
+      this.refs.viewShot.capture().then(uri => {
+        console.log("do something with ", uri);
+      });
   }
 
   renderFonts() {
@@ -264,7 +275,7 @@ export default class App extends React.Component {
             paddingHorizontal: 10
           }}
           activeOpacity={0.5}
-          onPress={() => Alert.alert("Saved to your library!")}
+          onPress={() => this.savePlaylist()}
         >
           <Text style={[styles.subtext, {fontWeight: '500'}]}>Save</Text>
           <Icon
