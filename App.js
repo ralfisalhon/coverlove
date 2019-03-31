@@ -25,7 +25,7 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {
-      colorIndex: 0,
+      colorIndex: 14,
       colors: [
         "#8745fb",
         "#ab55fa",
@@ -43,21 +43,61 @@ export default class App extends React.Component {
         "#111"
       ],
       textAlign: "center",
-      value: 0.35
+      value: 0.35,
+      imgURL: "https://source.unsplash.com/random/300x300",
+      dimensions: 300,
+      loading: true,
+      images: new Array(100)
     };
+  }
+
+  randomPicture(index) {
+    // Alert.alert(index.toString());
+    this.setState(
+      {
+        // dimensions: this.state.dimensions + 1,
+        loading: true
+      },
+      () =>
+        this.setState({
+          imgURL:
+            "https://source.unsplash.com/random/" +
+            (300 + index) +
+            "x" +
+            (300 + index)
+        })
+    );
+  }
+
+  randomColor() {
+    this.setState({ loading: false });
+    var colorIndex = Math.floor(Math.random() * this.state.colors.length);
+
+    if (colorIndex == this.state.colorIndex) {
+      this.randomColor();
+      return;
+    }
+
+    this.setState({ colorIndex });
   }
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        {this.renderHeader()}
-        {this.renderAlbum()}
-        <View style={styles.settingsContainer}>
-          <View style={styles.leftAlign}>
-            {this.renderIcons()}
-            {this.renderTextSettings()}
+        <ScrollView bounces={false}>
+          {this.renderHeader()}
+          {this.renderAlbum()}
+          <View style={styles.settingsContainer}>
+            <View style={styles.spaceBetween}>
+              {this.renderIcons()}
+              {this.renderRandom()}
+            </View>
+            <View style={{ width: windowWidth / 1.2 }}>
+              {this.renderImagePicker()}
+              {this.renderColorPicker()}
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     );
   }
@@ -66,6 +106,31 @@ export default class App extends React.Component {
     return (
       <View style={styles.titleView}>
         <Text style={styles.title}>coverbase</Text>
+      </View>
+    );
+  }
+
+  renderRandom() {
+    return (
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 16
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            borderWidth: 1,
+            borderColor: "white",
+            borderRadius: 10,
+            padding: 5
+          }}
+          activeOpacity={0.5}
+          onPress={() => this.randomPicture()}
+        >
+          <Text style={styles.subtext}>Randomize</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -80,8 +145,9 @@ export default class App extends React.Component {
           }}
         >
           <Image
-            source={{ uri: "https://source.unsplash.com/random/300x300" }}
+            source={{ uri: this.state.imgURL }}
             style={[styles.image, { opacity: 1 - this.state.value }]}
+            onLoad={() => this.randomColor()}
           />
         </View>
         <View
@@ -103,6 +169,11 @@ export default class App extends React.Component {
             defaultValue={"My Chill Mix"}
             maxLength={32}
           />
+          {this.state.loading ? (
+            <View style={{ height: 20 }}>
+              <Text style={styles.subtext}>Loading...</Text>
+            </View>
+          ) : null}
         </View>
       </View>
     );
@@ -155,7 +226,38 @@ export default class App extends React.Component {
     );
   };
 
-  renderTextSettings() {
+  renderImage = ({ item, index }) => {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={() => this.randomPicture(index)}
+        style={{
+          borderWidth: 0.5,
+          borderColor: "#555",
+          width: 64,
+          height: 64,
+          borderRadius: 10,
+          marginHorizontal: 2,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: this.state.colors[index]
+        }}
+      >
+        <Image
+          source={{
+            uri:
+              "https://source.unsplash.com/random/" +
+              (this.state.dimensions + index) +
+              "x" +
+              (this.state.dimensions + index)
+          }}
+          style={styles.thumbImage}
+        />
+      </TouchableOpacity>
+    );
+  };
+
+  renderColorPicker() {
     return (
       <View style={{ marginTop: 10 }}>
         <Text style={styles.text}>Pick a color</Text>
@@ -194,7 +296,46 @@ export default class App extends React.Component {
       </View>
     );
   }
+
+  renderImagePicker() {
+    return (
+      <View style={{ marginTop: 10 }}>
+        <Text style={styles.text}>Pick an image</Text>
+        <FlatList
+          horizontal
+          extraData={this.state.refresh}
+          ref={ref => {
+            this.flatListRef = ref;
+          }}
+          showsHorizontalScrollIndicator={false}
+          data={this.state.images}
+          renderItem={this.renderImage}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
+    );
+  }
 }
+
+var customStyles8 = StyleSheet.create({
+  container: {
+    height: 30
+  },
+  track: {
+    height: 4,
+    backgroundColor: "lightgray"
+  },
+  thumb: {
+    width: 12,
+    height: 12,
+    backgroundColor: "#31a4db",
+    shadowColor: "#31a4db",
+    borderRadius: 10 / 2,
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 2,
+    shadowOpacity: 1
+  }
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -225,6 +366,15 @@ const styles = StyleSheet.create({
     backgroundColor: "#485460",
     borderRadius: 20
   },
+  thumbImage: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: 64,
+    width: 64,
+    backgroundColor: "#485460",
+    borderRadius: 10,
+    opacity: 1
+  },
   textView: { width: windowWidth / 1.2 - 25, justifyContent: "center" },
   overlayText: {
     color: "white",
@@ -235,7 +385,8 @@ const styles = StyleSheet.create({
   },
   icons: {
     flexDirection: "row",
-    marginTop: 12
+    marginTop: 12,
+    paddingTop: 3
   },
   icon: {
     fontSize: 35,
@@ -260,27 +411,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  leftAlign: {
-    width: windowWidth / 1.2
-  }
-});
-
-var customStyles8 = StyleSheet.create({
-  container: {
-    height: 30
-  },
-  track: {
-    height: 4,
-    backgroundColor: "lightgray"
-  },
-  thumb: {
-    width: 12,
-    height: 12,
-    backgroundColor: "#31a4db",
-    shadowColor: "#31a4db",
-    borderRadius: 10 / 2,
-    shadowOffset: { width: 0, height: 0 },
-    shadowRadius: 2,
-    shadowOpacity: 1
+  spaceBetween: {
+    width: windowWidth / 1.2,
+    justifyContent: "space-between",
+    flexDirection: "row"
   }
 });
