@@ -26,24 +26,20 @@ export default class App extends React.Component {
     this.state = {
       colorIndex: 3,
       colors: [
-        "#151515",
         "#8745fb",
         "#ab55fa",
         "#448af8",
         "#2ef7e6",
         "#56fa5a",
-
         "#54825c",
-
         "#52fb9b",
         "#feda4b",
-
         "#f54b1e",
         "#fa714b",
-
         "#fed281",
-        "#e0d0df",
-        "#d4d4d4"
+        "#d2d2d2",
+        "#eee",
+        "#111"
       ],
       textAlign: "center"
     };
@@ -135,9 +131,11 @@ export default class App extends React.Component {
     );
   }
 
-  renderItem = ({ item, index }) => {
+  renderColor = ({ item, index }) => {
     return (
-      <View
+      <TouchableOpacity
+        activeOpacity={0.5}
+        onPress={() => this.setState({ colorIndex: index })}
         style={{
           borderWidth: 0.5,
           borderColor: "#555",
@@ -151,14 +149,14 @@ export default class App extends React.Component {
         }}
       >
         <Text />
-      </View>
+      </TouchableOpacity>
     );
   };
 
   renderTextSettings() {
     return (
       <View style={{ marginTop: 10 }}>
-        <Text style={styles.text}>Select a color</Text>
+        <Text style={styles.text}>Pick a color</Text>
         <FlatList
           horizontal
           extraData={this.state.refresh}
@@ -167,7 +165,7 @@ export default class App extends React.Component {
           }}
           showsHorizontalScrollIndicator={false}
           data={this.state.colors}
-          renderItem={this.renderItem}
+          renderItem={this.renderColor}
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
