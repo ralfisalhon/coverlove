@@ -110,8 +110,9 @@ export default class App extends React.Component {
           <View style={styles.settingsContainer}>
             <View style={styles.spaceBetween}>
               {this.renderIcons()}
-              {this.renderSave()}
+              {this.renderFonts()}
               {this.renderRandom()}
+              {this.renderSave()}
             </View>
             <View style={{ width: windowWidth / 1.2 }}>
               {this.renderImagePicker()}
@@ -126,7 +127,7 @@ export default class App extends React.Component {
   renderHeader() {
     return (
       <View style={styles.titleView}>
-        <Text style={styles.title}>coverbase</Text>
+        <Text style = {[styles.title, {color: "#fff"}]}>cover<Text style = {{color: "#faa719"}}>love</Text> </Text>
       </View>
     );
   }
@@ -138,7 +139,6 @@ export default class App extends React.Component {
           justifyContent: "center",
           alignItems: "flex-end",
           marginTop: 12,
-          width: windowWidth / 4
         }}
       >
         <TouchableOpacity
@@ -162,6 +162,73 @@ export default class App extends React.Component {
             }}
           />
         </TouchableOpacity>
+      </View>
+    );
+  }
+
+  renderFonts() {
+    return (
+      <View
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 8,
+          flexDirection: 'row',
+        }}
+      >
+        <TouchableOpacity
+          style={{
+            borderRadius: 10,
+            padding: 5,
+            paddingHorizontal: 5,
+            width: 30,
+            height: 30,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginLeft: -30
+          }}
+          activeOpacity={0.5}
+          onPress={() => Alert.alert("minus!")}
+        >
+          <Icon
+            name={"minus"}
+            type={"Entypo"}
+            style={{
+              fontSize: 25,
+              color: "white",
+              textShadowColor: 'rgba(0, 0, 0, 0.7)',
+              textShadowOffset: {width: 0, height: 1},
+              textShadowRadius: 1
+            }}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            borderRadius: 10,
+            padding: 5,
+            paddingHorizontal: 5,
+            width: 30,
+            height: 30,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginLeft: -5,
+          }}
+          activeOpacity={0.5}
+          onPress={() => Alert.alert("plus!")}
+        >
+          <Icon
+            name={"plus"}
+            type={"Entypo"}
+            style={{
+              fontSize: 25,
+              color: "white",
+              textShadowColor: 'rgba(0, 0, 0, 0.7)',
+              textShadowOffset: {width: 0, height: 1},
+              textShadowRadius: 1
+            }}
+          />
+        </TouchableOpacity>
+
       </View>
     );
   }
@@ -392,7 +459,7 @@ export default class App extends React.Component {
 
 var customStyles8 = StyleSheet.create({
   container: {
-    height: 30
+    height: 30,
   },
   track: {
     height: 4,
@@ -413,7 +480,7 @@ var customStyles8 = StyleSheet.create({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000"
+    backgroundColor: "#1c1c1c"
   },
   titleView: {
     width: "100%",
