@@ -14,12 +14,12 @@ import {
   Component,
   ScrollView,
   TextInput,
-  SafeAreaView
+  SafeAreaView,
+  CameraRoll,
 } from "react-native";
 import { Icon } from "native-base";
 import Slider from "react-native-slider";
 import ViewShot from "react-native-view-shot";
-import CameraRollExtended from 'react-native-store-photos-album'
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 const randomAddition = Math.floor(Math.random() * Math.floor(100));
@@ -111,7 +111,7 @@ export default class App extends React.Component {
 
     this.setState({
       colorIndex,
-      value: (Math.floor(Math.random() * Math.floor(50)) + 25) / 100
+      value: (Math.floor(Math.random() * Math.floor(40)) + 30) / 100
     });
   }
 
@@ -183,8 +183,13 @@ export default class App extends React.Component {
   }
 
   savePlaylist() {
+      if (this.state.loading) {
+          Alert.alert("Cannot save while loading");
+          return;
+      }
       this.refs.viewShot.capture().then(uri => {
-        console.log("do something with ", uri);
+        // Alert.alert(uri.toString());
+        CameraRoll.saveToCameraRoll(uri.toString());
       });
   }
 
@@ -382,7 +387,7 @@ export default class App extends React.Component {
           borderColor: "#555",
           width: 64,
           height: 64,
-          borderRadius: 10,
+          borderRadius: 5,
           marginHorizontal: 2,
           justifyContent: "center",
           alignItems: "center",
@@ -404,7 +409,7 @@ export default class App extends React.Component {
           borderColor: "#555",
           width: 64,
           height: 64,
-          borderRadius: 10,
+          borderRadius: 5,
           marginHorizontal: 2,
           justifyContent: "center",
           alignItems: "center",
@@ -539,7 +544,7 @@ const styles = StyleSheet.create({
     height: 64,
     width: 64,
     backgroundColor: "#485460",
-    borderRadius: 10,
+    borderRadius: 5,
     opacity: 1
   },
   textView: {
