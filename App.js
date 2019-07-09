@@ -15,7 +15,7 @@ import {
   ScrollView,
   TextInput,
   SafeAreaView,
-  CameraRoll,
+  CameraRoll
 } from "react-native";
 import { Icon } from "native-base";
 import Slider from "react-native-slider";
@@ -23,6 +23,8 @@ import ViewShot from "react-native-view-shot";
 
 const { width: windowWidth, height: windowHeight } = Dimensions.get("window");
 const randomAddition = Math.floor(Math.random() * Math.floor(100));
+
+console.disableYellowBox = true;
 
 export default class App extends React.Component {
   constructor(props) {
@@ -52,30 +54,26 @@ export default class App extends React.Component {
       loading: true,
       images: new Array(50),
       name: "My Chill Mix",
-      fontSize: 32,
+      fontSize: 36
     };
   }
 
   randomPicture() {
+    if (this.state.loading) return;
     this.setState(
       {
         loading: true
       },
       () =>
         this.setState({
-          imgURL:
-            "https://picsum.photos/512/?image=" +
-            Math.floor(Math.random() * Math.floor(1000))
+          imgURL: "https://picsum.photos/512/?image=" + Math.floor(Math.random() * Math.floor(1000))
         })
     );
   }
 
   newPicture(index) {
     // Alert.alert(index * 10 + this.state.randomAddition);
-    if (
-      this.state.imgURL ==
-      "https://picsum.photos/512/?image=" + (index * 10 + randomAddition)
-    ) {
+    if (this.state.imgURL == "https://picsum.photos/512/?image=" + (index * 10 + randomAddition)) {
       return;
     }
     this.setState(
@@ -84,20 +82,19 @@ export default class App extends React.Component {
       },
       () =>
         this.setState({
-          imgURL:
-            "https://picsum.photos/512/?image=" + (index * 10 + randomAddition)
+          imgURL: "https://picsum.photos/512/?image=" + (index * 10 + randomAddition)
         })
     );
   }
 
   increaseFont() {
-      if (this.state.fontSize > 50) return;
-      this.setState({fontSize: this.state.fontSize + 2});
+    if (this.state.fontSize > 50) return;
+    this.setState({ fontSize: this.state.fontSize + 2 });
   }
 
   decreaseFont() {
-      if (this.state.fontSize < 20) return;
-      this.setState({fontSize: this.state.fontSize - 2});
+    if (this.state.fontSize < 20) return;
+    this.setState({ fontSize: this.state.fontSize - 2 });
   }
 
   randomColor() {
@@ -111,18 +108,17 @@ export default class App extends React.Component {
 
     this.setState({
       colorIndex,
-      value: (Math.floor(Math.random() * Math.floor(40)) + 30) / 100
+      value: (Math.floor(Math.random() * Math.floor(25)) + 35) / 100
     });
   }
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView bounces={true}>
+        <ScrollView bounces={false}>
           {this.renderHeader()}
-          <ViewShot ref="viewShot" options={{ format: "jpg", quality: 0.9 }}>
-            {this.renderAlbum()}
-          </ViewShot>
+          {this.renderAlbum()}
+          {this.renderCredit()}
           <View style={styles.settingsContainer}>
             <View style={styles.spaceBetween}>
               {this.renderIcons()}
@@ -130,7 +126,7 @@ export default class App extends React.Component {
               {this.renderRandom()}
               {this.renderSave()}
             </View>
-            <View style={{ width: windowWidth / 1.2 }}>
+            <View style={{ width: windowWidth - 40 }}>
               {this.renderImagePicker()}
               {this.renderColorPicker()}
             </View>
@@ -143,7 +139,10 @@ export default class App extends React.Component {
   renderHeader() {
     return (
       <View style={styles.titleView}>
-        <Text style = {[styles.title, {color: "#fff"}]}>cover<Text style = {{color: "#faa719"}}>love</Text> <Text style = {{fontSize: 12}}>by Ralfi</Text> </Text>
+        <Text style={[styles.title, { color: "#fff" }]}>
+          cover<Text style={{ color: "#faa719" }}>love</Text>{" "}
+          <Text style={{ fontSize: 12 }}>by Ralfi</Text>{" "}
+        </Text>
       </View>
     );
   }
@@ -154,17 +153,17 @@ export default class App extends React.Component {
         style={{
           justifyContent: "center",
           alignItems: "flex-end",
-          marginTop: 12,
+          marginTop: 12
         }}
       >
         <TouchableOpacity
           style={{
             borderWidth: 1,
             borderColor: "white",
-            borderRadius: 10,
+            borderRadius: 5,
             padding: 5,
             flexDirection: "row",
-            paddingHorizontal: 10
+            paddingHorizontal: 8
           }}
           activeOpacity={0.5}
           onPress={() => this.randomPicture()}
@@ -183,14 +182,15 @@ export default class App extends React.Component {
   }
 
   savePlaylist() {
-      if (this.state.loading) {
-          Alert.alert("Cannot save while loading");
-          return;
-      }
-      this.refs.viewShot.capture().then(uri => {
-        // Alert.alert(uri.toString());
-        CameraRoll.saveToCameraRoll(uri.toString());
-      });
+    if (this.state.loading) {
+      Alert.alert("Cannot save while loading");
+      return;
+    }
+    this.refs.viewShot.capture().then(uri => {
+      CameraRoll.saveToCameraRoll(uri.toString());
+      console.log(uri);
+      Alert.alert("Image saved to your library!");
+    });
   }
 
   renderFonts() {
@@ -200,18 +200,18 @@ export default class App extends React.Component {
           justifyContent: "center",
           alignItems: "center",
           marginTop: 7,
-          flexDirection: 'row',
+          flexDirection: "row"
         }}
       >
         <TouchableOpacity
           style={{
-            borderRadius: 10,
+            borderRadius: 5,
             padding: 5,
             paddingHorizontal: 5,
             width: 32,
             height: 32,
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: "center",
+            alignItems: "center",
             marginLeft: -28
           }}
           activeOpacity={0.5}
@@ -223,22 +223,22 @@ export default class App extends React.Component {
             style={{
               fontSize: 27,
               color: "white",
-              textShadowColor: 'rgba(0, 0, 0, 0.75)',
-              textShadowOffset: {width: 0, height: 1},
+              textShadowColor: "rgba(0, 0, 0, 0.75)",
+              textShadowOffset: { width: 0, height: 1 },
               textShadowRadius: 1
             }}
           />
         </TouchableOpacity>
         <TouchableOpacity
           style={{
-            borderRadius: 10,
+            borderRadius: 5,
             padding: 5,
             paddingHorizontal: 5,
             width: 32,
             height: 32,
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginLeft: -5,
+            justifyContent: "center",
+            alignItems: "center",
+            marginLeft: -5
           }}
           activeOpacity={0.5}
           onPress={() => this.increaseFont()}
@@ -249,13 +249,12 @@ export default class App extends React.Component {
             style={{
               fontSize: 27,
               color: "white",
-              textShadowColor: 'rgba(0, 0, 0, 0.7)',
-              textShadowOffset: {width: 0, height: 1},
+              textShadowColor: "rgba(0, 0, 0, 0.7)",
+              textShadowOffset: { width: 0, height: 1 },
               textShadowRadius: 1
             }}
           />
         </TouchableOpacity>
-
       </View>
     );
   }
@@ -274,15 +273,15 @@ export default class App extends React.Component {
             borderWidth: 1,
             borderColor: "white",
             backgroundColor: this.state.colors[this.state.colorIndex],
-            borderRadius: 10,
+            borderRadius: 5,
             padding: 5,
             flexDirection: "row",
-            paddingHorizontal: 10
+            paddingHorizontal: 8
           }}
           activeOpacity={0.5}
           onPress={() => this.savePlaylist()}
         >
-          <Text style={[styles.subtext, {fontWeight: '500'}]}>Save</Text>
+          <Text style={[styles.subtext, { fontWeight: "500" }]}>Save</Text>
           <Icon
             name={"save"}
             type={"AntDesign"}
@@ -290,8 +289,8 @@ export default class App extends React.Component {
               fontSize: 20,
               color: "white",
               marginLeft: 5,
-              textShadowColor: 'rgba(0, 0, 0, 0.5)',
-              textShadowOffset: {width: 0, height: 1},
+              textShadowColor: "rgba(0, 0, 0, 0.5)",
+              textShadowOffset: { width: 0, height: 1 },
               textShadowRadius: 1
             }}
           />
@@ -301,12 +300,32 @@ export default class App extends React.Component {
   }
 
   updateName(name) {
-      this.setState({name})
+    this.setState({ name });
+  }
+
+  renderCredit() {
+    return (
+      <View
+        style={{
+          width: windowWidth,
+          alignItems: "center",
+          paddingHorizontal: 40,
+          marginTop: 2,
+          marginBottom: -4
+        }}
+      >
+        <View style={{ width: windowWidth / 1.2, alignItems: "flex-end" }}>
+          <Text style={[styles.subtext, { color: "lightgray", fontWeight: "400", fontSize: 11 }]}>
+            All images by picsum.photos
+          </Text>
+        </View>
+      </View>
+    );
   }
 
   renderAlbum() {
     return (
-      <View style={styles.imageView}>
+      <ViewShot ref="viewShot" options={{ format: "jpg", quality: 1.0 }} style={styles.imageView}>
         <View
           style={{
             borderRadius: 0,
@@ -324,7 +343,7 @@ export default class App extends React.Component {
           style={[
             styles.textView,
             {
-                justifyContent: 'center',
+              justifyContent: "center",
               alignItems:
                 this.state.textAlign == "center"
                   ? "center"
@@ -336,11 +355,16 @@ export default class App extends React.Component {
         >
           <TextInput
             multiline
-            value={ this.state.name }
-            style={[styles.overlayText, { textAlign: this.state.textAlign, fontSize: this.state.fontSize}]}
+            value={this.state.name}
+            style={[
+              styles.overlayText,
+              { textAlign: this.state.textAlign, fontSize: this.state.fontSize }
+            ]}
             defaultValue={"My Chill Mix"}
-            onChangeText={ (e) => this.updateName(e) }
+            onChangeText={e => this.updateName(e)}
             maxLength={32}
+            autoCorrect={false}
+            autoComplete={false}
           />
           {this.state.loading ? (
             <View style={{ height: 20 }}>
@@ -348,17 +372,14 @@ export default class App extends React.Component {
             </View>
           ) : null}
         </View>
-      </View>
+      </ViewShot>
     );
   }
 
   renderIcons() {
     return (
       <View style={styles.icons}>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => this.setState({ textAlign: "left" })}
-        >
+        <TouchableOpacity activeOpacity={0.5} onPress={() => this.setState({ textAlign: "left" })}>
           <Icon name={"align-left"} type={"Foundation"} style={styles.icon} />
         </TouchableOpacity>
         <TouchableOpacity
@@ -367,10 +388,7 @@ export default class App extends React.Component {
         >
           <Icon name={"align-center"} type={"Foundation"} style={styles.icon} />
         </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => this.setState({ textAlign: "right" })}
-        >
+        <TouchableOpacity activeOpacity={0.5} onPress={() => this.setState({ textAlign: "right" })}>
           <Icon name={"align-right"} type={"Foundation"} style={styles.icon} />
         </TouchableOpacity>
       </View>
@@ -418,9 +436,7 @@ export default class App extends React.Component {
       >
         <Image
           source={{
-            uri:
-              "https://picsum.photos/128/?image=" +
-              (index * 10 + randomAddition)
+            uri: "https://picsum.photos/128/?image=" + (index * 10 + randomAddition)
           }}
           style={styles.thumbImage}
         />
@@ -446,7 +462,8 @@ export default class App extends React.Component {
         <View
           style={{
             flexDirection: "row",
-            alignItems: "center"
+            alignItems: "center",
+            marginTop: 5
           }}
         >
           <Text style={styles.subtext}>Intensity</Text>
@@ -490,21 +507,21 @@ export default class App extends React.Component {
 
 var customStyles8 = StyleSheet.create({
   container: {
-    height: 30,
+    height: 30
   },
   track: {
-    height: 4,
+    height: 5,
     backgroundColor: "lightgray"
   },
   thumb: {
-    width: 12,
-    height: 12,
+    width: 13,
+    height: 13,
     backgroundColor: "#31a4db",
     shadowColor: "#31a4db",
     borderRadius: 10 / 2,
-    shadowOffset: { width: 0, height: 0 },
+    shadowOffset: { width: 0, height: 1 },
     shadowRadius: 2,
-    shadowOpacity: 1
+    shadowOpacity: 0.5
   }
 });
 
@@ -526,7 +543,8 @@ const styles = StyleSheet.create({
     fontFamily: "Bradley Hand"
   },
   imageView: {
-    width: windowWidth,
+    width: windowWidth / 1.2,
+    marginLeft: (windowWidth - windowWidth / 1.2) / 2,
     alignItems: "center",
     borderRadius: 0
   },
@@ -556,14 +574,14 @@ const styles = StyleSheet.create({
     marginTop: windowWidth / -1.2,
     fontFamily: "Avenir Next",
     fontWeight: "500",
-    textShadowColor: 'rgba(0, 0, 0, 0.25)',
-    textShadowOffset: {width: 0, height: 1},
+    textShadowColor: "rgba(0, 0, 0, 0.25)",
+    textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 1
   },
   icons: {
     flexDirection: "row",
     marginTop: 12,
-    paddingTop: 3,
+    paddingTop: 3
   },
   icon: {
     fontSize: 32,
@@ -583,8 +601,8 @@ const styles = StyleSheet.create({
     fontFamily: "Avenir Next",
     fontSize: 16,
     fontWeight: "300",
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: {width: 0, height: 1},
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 1
   },
   settingsContainer: {
